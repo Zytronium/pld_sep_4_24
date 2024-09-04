@@ -126,4 +126,10 @@ if len(order.items) == 0:
 else:
     print("You ordered:")
     print_order(order)
-    print(f"Your total is ${order.calculate_total():.2f}")
+    set_color("green")
+    set_color("bold")
+    print(f"Your total is: ",end='')
+    set_color("light green")
+    set_color("reverse")
+    print(f"${order.calculate_total():.2f}")
+    reset_color()
