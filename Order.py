@@ -26,7 +26,7 @@ class Order:
         return total
 
     def get_json(self):
-        json_dict = {}
+        json_list = []
         for item in self.items:
-            json_dict[item.name] = item.__dict__
-        return json_dict
+            json_list.append(item.__dict__)
+        return json_list

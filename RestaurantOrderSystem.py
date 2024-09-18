@@ -1,13 +1,15 @@
 #!/bin/python3
 from Order import Order
 from MenuItem import MenuItem
+from entity import Entity
+from serializer import Serializer
 import json
 
 
 def print_menu(menu: list):
     for item in menu:
         if isinstance(item, MenuItem):
-            print(f"[{item.orderId:2}]: {item.name}: ", end='')
+            print(f"[{item.itemId:2}]: {item.name}: ", end='')
             space = 32 - len(item.name)
             for i in range(space):
                 if (i + len(item.name)) % 2 == 0:
@@ -92,6 +94,9 @@ soda = MenuItem("Soda", 3.99, 11)
 nugget = MenuItem("Nugget Nuggets", 16.99, 12)
 
 menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
+
+with open("orders.json", "r") as f:
+    all_orders = list(json.loads(f.read()))
 order = Order()
 
 print("Welcome to the restaurant. Here is the menu:")
@@ -110,7 +115,7 @@ while True:
     elif user_input != "done":
         item_found = False
         for item in menu_items:
-            if item.name.lower() == user_input or str(item.orderId) == user_input:
+            if item.name.lower() == user_input or str(item.itemId) == user_input:
                 order.add_item(item)
                 item_found = True
                 if item.name == "Roll":
@@ -135,5 +140,6 @@ else:
     set_color("reverse")
     print(f"${order.calculate_total():.2f}")
     reset_color()
+    all_orders.append(order.get_json())
     with open("orders.json", "w") as f:
-        json.dump(order.get_json(), f)
+        json.dump(all_orders, f)

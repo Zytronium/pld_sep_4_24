@@ -4,4 +4,4 @@ class MenuItem:
     def __init__(self, name: str, price: float, itemId: int):
         self.name = name
         self.price = price
-        self.orderId = itemId
+        self.itemId = itemId
