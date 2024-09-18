@@ -1,6 +1,7 @@
 #!/bin/python3
 import MenuItem
 
+
 class Order:
     def __init__(self, order_id: int, items: list = []):
         self.items = items
@@ -26,7 +27,7 @@ class Order:
             total += item.price
         return total
 
-    def get_json(self):
+    def to_dict(self):
         json_list = []
         for item in self.items:
             json_list.append(item.__dict__)

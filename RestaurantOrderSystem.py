@@ -86,67 +86,72 @@ def generate_order_id(orders):
             return generate_order_id(orders)
     return order_id
 
-chicken = MenuItem("Chicken Nuggets", 6.99, 0)
-salmon = MenuItem("Salmon Nuggets", 6.49, 1)
-sandwich = MenuItem("Sandwich", 5.99, 2)
-rickroll = MenuItem("Roll", 0.99, 3)
-halibut = MenuItem("Halibut", 14.99, 4)
-tuna = MenuItem("Tuna", 13.99, 5)
-pineapple = MenuItem("Pineapple", 12.99, 6)
-banana = MenuItem("Banana", 0.99, 7)
-apple = MenuItem("Apple", 2.99, 8)
-chips = MenuItem("Potato Chips", 2.99, 9)
-water = MenuItem("Water", 1.49, 10)
-soda = MenuItem("Soda", 3.99, 11)
-nugget = MenuItem("Nugget Nuggets", 16.99, 12)
+if __name__ == "__main__":
+    chicken = MenuItem("Chicken Nuggets", 7.99, 0)
+    salmon = MenuItem("Salmon Nuggets", 4.49, 1)
+    sandwich = MenuItem("Sandwich", 5.99, 2)
+    rickroll = MenuItem("Roll", 0.99, 3)
+    halibut = MenuItem("Halibut", 14.99, 4)
+    tuna = MenuItem("Tuna", 13.99, 5)
+    pineapple = MenuItem("Pineapple", 14.99, 6)
+    banana = MenuItem("Banana", 0.99, 7)
+    apple = MenuItem("Apple", 4.99, 8)
+    chips = MenuItem("Potato Chips", 2.99, 9)
+    water = MenuItem("Water", 2.49, 10)
+    soda = MenuItem("Soda", 3.99, 11)
+    nugget = MenuItem("Nugget Nuggets", 16.99, 12)
+    pie = MenuItem("Pie", 3141.59, 13)
 
-menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
+    menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
 
-all_orders = MySerializer.deserialize("orders.json")
-order_id = generate_order_id(all_orders)
-order = Order(order_id)
+    try:
+        all_orders = MySerializer.deserialize("orders.json")
+    except FileNotFoundError:
+        all_orders = []
+    order_id = generate_order_id(all_orders)
+    order = Order(order_id)
 
-print("Welcome to the restaurant. Here is the menu:")
-print_menu(menu_items)
+    print("Welcome to the restaurant. Here is the menu:")
+    print_menu(menu_items)
 
-while True:
-    print("Please type an item name you'd like to order. If that is everything, "
-          "type 'done'. To see the menu again, type 'menu'.")
-    set_color("bold")
-    set_color("italic")
-    set_color("light cyan")
-    user_input = input().lower()
-    reset_color()
-    if user_input == "menu":
-        print_menu(menu_items)
-    elif user_input != "done":
-        item_found = False
-        for item in menu_items:
-            if item.name.lower() == user_input or str(item.itemId) == user_input:
-                order.add_item(item)
-                item_found = True
-                if item.name == "Roll":
-                    print(f"Never Gonna Give You Up!")
-                print(f"{item.name if item.name != 'Roll' else 'Rick Roll'}: {item.price:.2f}")
-                break
-        if not item_found:
-            set_color("Red")
-            print("Not a valid menu item.")
-            reset_color()
+    while True:
+        print("Please type an item name you'd like to order. If that is everything, "
+              "type 'done'. To see the menu again, type 'menu'.")
+        set_color("bold")
+        set_color("italic")
+        set_color("light cyan")
+        user_input = input().lower()
+        reset_color()
+        if user_input == "menu":
+            print_menu(menu_items)
+        elif user_input != "done":
+            item_found = False
+            for item in menu_items:
+                if item.name.lower() == user_input or str(item.itemId) == user_input:
+                    order.add_item(item)
+                    item_found = True
+                    if item.name == "Roll":
+                        print(f"Never Gonna Give You Up!")
+                    print(f"{item.name if item.name != 'Roll' else 'Rick Roll'}: {item.price:.2f}")
+                    break
+            if not item_found:
+                set_color("Red")
+                print("Not a valid menu item.")
+                reset_color()
+        else:
+            break
+    if len(order.items) == 0:
+        print("Really? You came to our restaurant and didn't order?")
     else:
-        break
-if len(order.items) == 0:
-    print("Really? You came to our restaurant and didn't order?")
-else:
-    print("You ordered:")
-    print_order(order)
-    set_color("green")
-    set_color("bold")
-    print(f"Your total is: ",end='')
-    set_color("light green")
-    set_color("reverse")
-    print(f"${order.calculate_total():.2f}")
-    reset_color()
-    all_orders.append(order.get_json())
-    MySerializer.serialize(all_orders, "orders.json")
-print(all_orders[0][str("items")][0]["itemId"])
+        print("You ordered:")
+        print_order(order)
+        set_color("green")
+        set_color("bold")
+        print(f"Your total is: ",end='')
+        set_color("light green")
+        set_color("reverse")
+        print(f"${order.calculate_total():.2f}")
+        reset_color()
+        all_orders.append(order.to_dict())
+        MySerializer.serialize(all_orders, "orders.json")
+        print(all_orders[0][str("items")][0]["itemId"])
