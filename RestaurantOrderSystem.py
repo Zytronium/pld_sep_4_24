@@ -82,9 +82,8 @@ def reset_color():
 def generate_order_id(orders):
     order_id = randint(0, 99999999)
     for item in orders:
-        for key, value in item:
-            if value["order_id"] == order_id:
-                return generate_order_id(orders)
+        if item["order_id"] == order_id:
+            return generate_order_id(orders)
     return order_id
 
 chicken = MenuItem("Chicken Nuggets", 6.99, 0)
@@ -150,5 +149,4 @@ else:
     reset_color()
     all_orders.append(order.get_json())
     MySerializer.serialize(all_orders, "orders.json")
-print(all_orders[0][0]["itemId"])
-print(order_id)
+print(all_orders[0][str("items")][0]["itemId"])
