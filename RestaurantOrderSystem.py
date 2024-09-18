@@ -86,24 +86,24 @@ def generate_order_id(orders):
             return generate_order_id(orders)
     return order_id
 
+chicken = MenuItem("Chicken Nuggets", 7.99, 0)
+salmon = MenuItem("Salmon Nuggets", 4.49, 1)
+sandwich = MenuItem("Sandwich", 5.99, 2)
+rickroll = MenuItem("Roll", 0.99, 3)
+halibut = MenuItem("Halibut", 14.99, 4)
+tuna = MenuItem("Tuna", 13.99, 5)
+pineapple = MenuItem("Pineapple", 14.99, 6)
+banana = MenuItem("Banana", 0.99, 7)
+apple = MenuItem("Apple", 4.99, 8)
+chips = MenuItem("Potato Chips", 2.99, 9)
+water = MenuItem("Water", 2.49, 10)
+soda = MenuItem("Soda", 3.99, 11)
+nugget = MenuItem("Nugget Nuggets", 16.99, 12)
+pie = MenuItem("Pie", 3141.59, 13)
+
+menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget, pie]
+
 if __name__ == "__main__":
-    chicken = MenuItem("Chicken Nuggets", 7.99, 0)
-    salmon = MenuItem("Salmon Nuggets", 4.49, 1)
-    sandwich = MenuItem("Sandwich", 5.99, 2)
-    rickroll = MenuItem("Roll", 0.99, 3)
-    halibut = MenuItem("Halibut", 14.99, 4)
-    tuna = MenuItem("Tuna", 13.99, 5)
-    pineapple = MenuItem("Pineapple", 14.99, 6)
-    banana = MenuItem("Banana", 0.99, 7)
-    apple = MenuItem("Apple", 4.99, 8)
-    chips = MenuItem("Potato Chips", 2.99, 9)
-    water = MenuItem("Water", 2.49, 10)
-    soda = MenuItem("Soda", 3.99, 11)
-    nugget = MenuItem("Nugget Nuggets", 16.99, 12)
-    pie = MenuItem("Pie", 3141.59, 13)
-
-    menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
-
     try:
         all_orders = MySerializer.deserialize("orders.json")
     except FileNotFoundError:
