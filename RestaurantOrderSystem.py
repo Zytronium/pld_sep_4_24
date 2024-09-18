@@ -1,11 +1,13 @@
 #!/bin/python3
 from Order import Order
 from MenuItem import MenuItem
+import json
+
 
 def print_menu(menu: list):
     for item in menu:
         if isinstance(item, MenuItem):
-            print(f"{item.name}: ",end='')
+            print(f"[{item.orderId:2}]: {item.name}: ", end='')
             space = 32 - len(item.name)
             for i in range(space):
                 if (i + len(item.name)) % 2 == 0:
@@ -75,19 +77,19 @@ def set_color(color: str):
 def reset_color():
     print("\033[0m", end='')
 
-chicken = MenuItem("Chicken Nuggets", 6.99)
-salmon = MenuItem("Salmon Nuggets", 6.49)
-sandwich = MenuItem("Sandwich", 5.99)
-rickroll = MenuItem("Roll", 0.99)
-halibut = MenuItem("Halibut", 14.99)
-tuna = MenuItem("Tuna", 13.99)
-pineapple = MenuItem("Pineapple", 12.99)
-banana = MenuItem("Banana", 0.99)
-apple = MenuItem("Apple", 2.99)
-chips = MenuItem("Potato Chips", 2.99)
-water = MenuItem("Water", 1.49)
-soda = MenuItem("Soda", 3.99)
-nugget = MenuItem("Nugget Nuggets", 16.99)
+chicken = MenuItem("Chicken Nuggets", 6.99, 0)
+salmon = MenuItem("Salmon Nuggets", 6.49, 1)
+sandwich = MenuItem("Sandwich", 5.99, 2)
+rickroll = MenuItem("Roll", 0.99, 3)
+halibut = MenuItem("Halibut", 14.99, 4)
+tuna = MenuItem("Tuna", 13.99, 5)
+pineapple = MenuItem("Pineapple", 12.99, 6)
+banana = MenuItem("Banana", 0.99, 7)
+apple = MenuItem("Apple", 2.99, 8)
+chips = MenuItem("Potato Chips", 2.99, 9)
+water = MenuItem("Water", 1.49, 10)
+soda = MenuItem("Soda", 3.99, 11)
+nugget = MenuItem("Nugget Nuggets", 16.99, 12)
 
 menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
 order = Order()
@@ -108,7 +110,7 @@ while True:
     elif user_input != "done":
         item_found = False
         for item in menu_items:
-            if item.name.lower() == user_input:
+            if item.name.lower() == user_input or str(item.orderId) == user_input:
                 order.add_item(item)
                 item_found = True
                 if item.name == "Roll":
@@ -133,3 +135,5 @@ else:
     set_color("reverse")
     print(f"${order.calculate_total():.2f}")
     reset_color()
+    with open("orders.json", "w") as f:
+        json.dump(order.get_json(), f)

@@ -24,3 +24,9 @@ class Order:
         for item in self.items:
             total += item.price
         return total
+
+    def get_json(self):
+        json_dict = {}
+        for item in self.items:
+            json_dict[item.name] = item.__dict__
+        return json_dict
