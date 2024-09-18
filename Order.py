@@ -2,8 +2,9 @@
 import MenuItem
 
 class Order:
-    def __init__(self, items: list = []):
+    def __init__(self, order_id: int, items: list = []):
         self.items = items
+        self.order_id = order_id
 
     def add_item(self, item: MenuItem):
         self.items.append(item)
@@ -29,4 +30,4 @@ class Order:
         json_list = []
         for item in self.items:
             json_list.append(item.__dict__)
-        return json_list
+        return {"order_id": self.order_id, "items": json_list}

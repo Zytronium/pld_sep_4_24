@@ -1,8 +1,8 @@
 #!/bin/python3
+from random import randint
+from AbcClasses import MySerializer
 from Order import Order
 from MenuItem import MenuItem
-from entity import Entity
-from serializer import Serializer
 import json
 
 
@@ -79,6 +79,14 @@ def set_color(color: str):
 def reset_color():
     print("\033[0m", end='')
 
+def generate_order_id(orders):
+    order_id = randint(0, 99999999)
+    for item in orders:
+        for key, value in item:
+            if value["order_id"] == order_id:
+                return generate_order_id(orders)
+    return order_id
+
 chicken = MenuItem("Chicken Nuggets", 6.99, 0)
 salmon = MenuItem("Salmon Nuggets", 6.49, 1)
 sandwich = MenuItem("Sandwich", 5.99, 2)
@@ -95,9 +103,9 @@ nugget = MenuItem("Nugget Nuggets", 16.99, 12)
 
 menu_items = [chicken, salmon, sandwich, rickroll, halibut, tuna, pineapple, banana, apple, chips, water, soda, nugget]
 
-with open("orders.json", "r") as f:
-    all_orders = list(json.loads(f.read()))
-order = Order()
+all_orders = MySerializer.deserialize("orders.json")
+order_id = generate_order_id(all_orders)
+order = Order(order_id)
 
 print("Welcome to the restaurant. Here is the menu:")
 print_menu(menu_items)
@@ -141,5 +149,6 @@ else:
     print(f"${order.calculate_total():.2f}")
     reset_color()
     all_orders.append(order.get_json())
-    with open("orders.json", "w") as f:
-        json.dump(all_orders, f)
+    MySerializer.serialize(all_orders, "orders.json")
+print(all_orders[0][0]["itemId"])
+print(order_id)
